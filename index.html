@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Links with Options</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 1.5em; /* Decreased by 50% */
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: auto; /* Center the button */
+        }
+    </style>
+</head>
+<body>
+    <h1>Create the bulk domains in Namecheap.com</h1>
+
+    <label for="defaultUrl">Default URL:</label>
+    <input type="text" id="defaultUrl" name="defaultUrl" placeholder="Enter default URL" value="https://www.namecheap.com/hosting/purchase/domain-connection/?product=stellar-business&addons=server-location%3Bserver-location-us&duration=1&durationtype=year&domain=example.com&domainType=new">
+
+    <label for="bulkDomains">Enter Number of Domains:</label>
+    <textarea id="bulkDomains" name="bulkDomains" placeholder="Enter domain names (one per line)"></textarea>
+
+    <label for="delaySeconds">How many seconds between each link?</label>
+    <input type="number" id="delaySeconds" name="delaySeconds" placeholder="Enter seconds">
+
+    <label for="openOption">Choose Option:</label>
+    <select id="openOption" name="openOption">
+        <option value="oneByOne">One by One</option>
+        <option value="openAll">Open All</option>
+    </select>
+
+    <button onclick="createLinks()">Create</button>
+
+    <script>
+        function createLinks() {
+            // Get the default URL, bulk domains, delay in seconds, and open option from the input boxes
+            var defaultUrl = document.getElementById("defaultUrl").value;
+            var bulkDomains = document.getElementById("bulkDomains").value.split('\n').filter(Boolean);
+            var delaySeconds = document.getElementById("delaySeconds").value;
+            var openOption = document.getElementById("openOption").value;
+
+            // Generate links and open them in new tabs based on the selected option
+            for (var i = 0; i < bulkDomains.length; i++) {
+                var domain = bulkDomains[i].trim();
+                var link = defaultUrl.replace("example.com", domain);
+
+                if (openOption === "oneByOne") {
+                    // Open link in a new tab after the specified delay
+                    setTimeout(function(url) {
+                        return function() {
+                            window.open(url, '_blank');
+                        };
+                    }(link), i * delaySeconds * 1000);
+                } else {
+                    // Open all links in new tabs in the background
+                    window.open(link, '_blank', '');
+                }
+            }
+        }
+    </script>
+</body>
+  </html>
+      
